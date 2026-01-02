@@ -1,0 +1,18 @@
+# Model and service configuration (no secrets checked in).
+
+local_llm:
+  model: "llama3.1"
+  provider: "ollama"
+
+cloud_llm:
+  provider: "azure_openai"
+  model: "gpt-4o-mini"
+  endpoint: "https://example.azure.com/"
+  api_key: "${AZURE_API_KEY}"
+
+mcp:
+  host: "127.0.0.1"
+  port: 8000
+
+storage:
+  sqlite_path: "local_env/secure_data.db"
