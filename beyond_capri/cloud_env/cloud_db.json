@@ -1,0 +1,20 @@
+{
+  "records": [
+    {
+      "id": "User_x9", 
+      "name": "David Smith",
+      "gender": "Male", 
+      "age": 45,
+      "status": "Active",
+      "notes": "Patient requires immediate scheduling."
+    },
+    {
+      "id": "Entity_f21151da",
+      "name": "David Smith",
+      "gender": "Male",
+      "age": 45,
+      "status": "Active",
+      "notes": "System error: Gender mismatch in legacy logs."
+    }
+  ]
+}

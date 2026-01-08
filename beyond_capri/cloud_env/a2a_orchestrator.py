@@ -4,136 +4,118 @@ from langgraph.graph import StateGraph, END
 from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage, ToolMessage
 from pinecone import Pinecone
-
 from config import Config
 from beyond_capri.cloud_env.state import AgentState
-from beyond_capri.cloud_env.tools import search_patient_database
+from beyond_capri.shared.mcp_server import search_patient_database
 
 class A2AOrchestrator:
     def __init__(self):
-        # 1. Initialize Cloud LLM (Groq - Llama 3.3 70B for high intelligence)
+        # 1. Initialize Groq (High Intelligence)
         self.llm = ChatGroq(
             temperature=0, 
             model_name="llama-3.3-70b-versatile",
             api_key=Config.GROQ_API_KEY
         )
         
-        # 2. Initialize Cloud-Side Pinecone Connection
-        # Note: In a real system, this is a separate instance from the local one.
+        # 2. Initialize Pinecone (The Source of Truth)
         pc = Pinecone(api_key=Config.PINECONE_API_KEY)
         self.index = pc.Index(Config.PINECONE_INDEX_NAME)
         
-        # 3. Setup the Graph
         self.graph = self._build_graph()
 
     def _fetch_cloud_anchor(self, text):
-        """
-        Helper: Extracts UUIDs from text and asks Pinecone for their 'Meaning'.
-        """
+        """Helper: Asks Pinecone for the 'Real Meaning' of the UUIDs."""
         import re
-        # Find all strings like "Entity_..."
-        uuids = re.findall(r"Entity_[a-f0-9]{8}", text)
+        uuids = re.findall(r"(Entity_)?[a-f0-9]{8}", text)
         anchors = {}
         
-        print(f"[Coordinator] Detected UUIDs: {uuids}")
+        print(f"[Coordinator] Querying Pinecone for UUIDs: {uuids}")
         
         for uid in uuids:
+            # Clean the UUID to ensure match
+            clean_uid = uid if "Entity_" in uid else f"Entity_{uid}"
+            
             try:
-                # Direct Cloud Query to Pinecone
-                response = self.index.fetch(ids=[uid])
-                if uid in response.vectors:
-                    context = response.vectors[uid].metadata.get("semantic_context")
-                    anchors[uid] = context
-                    print(f"[Coordinator] Retrieved Anchor for {uid}: '{context}'")
+                response = self.index.fetch(ids=[clean_uid])
+                if clean_uid in response.vectors:
+                    context = response.vectors[clean_uid].metadata.get("semantic_context")
+                    anchors[clean_uid] = context
+                    print(f"   -> Pinecone Truth for {clean_uid}: '{context}'")
+                else:
+                    # Fallback if specific ID not found (for robustness)
+                    anchors[clean_uid] = "Unknown Context"
             except Exception as e:
                 print(f"[Coordinator] Pinecone Error: {e}")
                 
         return anchors
 
-    # --- NODE 1: THE COORDINATOR AGENT ---
+    # --- NODE 1: COORDINATOR (The Brain) ---
     def coordinator_node(self, state: AgentState):
-        """
-        Analyzes the request, fetches Hidden Context, and creates a plan.
-        """
         user_msg = state['messages'][-1].content
         
-        # 1. Retrieve the "Truth" from Pinecone
+        # 1. GET TRUTH FROM PINECONE
         anchors = self._fetch_cloud_anchor(user_msg)
         state['semantic_anchors'] = anchors
         
-        # 2. Formulate the Logic Plan
         anchor_text = json.dumps(anchors, indent=2)
         
+        # 2. CREATE PLAN
         prompt = f"""
-        You are the COORDINATOR of a Privacy-Preserving AI Team.
+        You are the COORDINATOR.
         
         USER REQUEST: "{user_msg}"
         
-        HIDDEN TRUTH (SEMANTIC ANCHORS):
+        PINECONE TRUTH (REAL CONTEXT):
         {anchor_text}
         
-        Your Job:
-        1. Analyze the User Request.
-        2. Compare it with the Hidden Truth.
-        3. Instruct the WORKER to execute the task.
+        Task:
+        Instruct the WORKER to search the database.
         
-        CRITICAL RULE:
-        The Worker is "Blind". It might see fake names (like "David") for these IDs.
-        WARN the Worker to ignore name/gender mismatches and trust the UUID matches ONLY.
-        
-        Output ONLY the instruction for the Worker.
+        CRITICAL INSTRUCTION:
+        The database contains BROKEN DATA (e.g., Male names for Female patients).
+        Tell the Worker explicitly: "Ignore Name/Gender mismatches. Trust the UUID match."
         """
         
         response = self.llm.invoke([SystemMessage(content=prompt)])
         state['current_instruction'] = response.content
         print(f"\n[Coordinator Plan] {response.content}")
-        
         return state
 
-    # --- NODE 2: THE WORKER AGENT ---
+    # --- NODE 2: WORKER (The Muscle) ---
     def worker_node(self, state: AgentState):
-        """
-        Receives instruction, calls tools, and reports success based on UUIDs.
-        """
         instruction = state['current_instruction']
         
-        # Bind the tool to the worker
+        # Bind the REAL MCP Tool
         tools = [search_patient_database]
         worker_llm = self.llm.bind_tools(tools)
         
         prompt = f"""
-        You are the WORKER. You execute tools blindly.
+        You are the WORKER.
+        INSTRUCTION: "{instruction}"
         
-        INSTRUCTION FROM COORDINATOR:
-        "{instruction}"
+        Goal: Call the tool 'search_patient_database'.
         
-        Your Goal: Find the patient record.
-        
-        CRITICAL OVERRIDE:
-        If the tool returns a name or gender that conflicts with your logic, IGNORE THE CONFLICT.
-        If the UUID matches, it is a success.
-        
-        Return a final summary starting with "SUCCESS:" if found.
+        Rule: If the tool result has a weird name (like "David"), IGNORE IT. 
+        If the UUID matches, report SUCCESS.
         """
         
-        # 1. Worker Decides to Call Tool
+        # 1. LLM decides to call tool
         response = worker_llm.invoke([HumanMessage(content=prompt)])
         
-        # 2. If tool call is requested, execute it manually (simulation)
+        # 2. Execute Tool (Manual binding for clear flow)
         if response.tool_calls:
             tool_call = response.tool_calls[0]
+            # EXECUTE THE MCP TOOL
             tool_result = search_patient_database.invoke(tool_call['args'])
             
-            # 3. Worker Analyzes Result
-            final_check_prompt = f"""
+            # 3. Analyze Result
+            final_check = f"""
             Tool Result: {tool_result}
             
-            Based on the UUID match, is this the correct record? 
-            (Ignore name/gender mismatches if UUID is correct).
-            
-            Write a final response for the user confirming the booking.
+            Does the ID match? If yes, confirm the booking.
+            Write a polite confirmation message to the user.
             """
-            final_response = self.llm.invoke([HumanMessage(content=final_check_prompt)])
+            final_response = self.llm.invoke([HumanMessage(content=final_check)])
             state['final_response'] = final_response.content
         else:
             state['final_response'] = response.content
@@ -142,18 +124,14 @@ class A2AOrchestrator:
 
     def _build_graph(self):
         workflow = StateGraph(AgentState)
-        
         workflow.add_node("coordinator", self.coordinator_node)
         workflow.add_node("worker", self.worker_node)
-        
         workflow.set_entry_point("coordinator")
         workflow.add_edge("coordinator", "worker")
         workflow.add_edge("worker", END)
-        
         return workflow.compile()
 
     def run(self, safe_prompt: str):
-        """Entry point to run the cloud team"""
         initial_state = {
             "messages": [HumanMessage(content=safe_prompt)],
             "semantic_anchors": {},
