@@ -16,3 +16,4 @@ mcp
 langchain-community
 langchain-huggingface
 requests
+graphviz

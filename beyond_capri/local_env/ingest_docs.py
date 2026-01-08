@@ -15,8 +15,8 @@ def ingest_documents():
     
     # Ensure directory exists
     if not os.path.exists(DOCS_DIR):
-        os.makedirs(DOCS_DIR)
-        print(f"Created folder: {DOCS_DIR}. Please put .txt files there and run again.")
+        print(f"Error: Directory {DOCS_DIR} not found.")
+        print("Please create 'local_env/raw_documents' and add .txt files.")
         return
 
     # 2. Iterate through files
@@ -29,12 +29,12 @@ def ingest_documents():
                 raw_content = f.read()
             
             # 3. CRITICAL: Sanitize BEFORE Uploading
-            # This ensures Cloud Pinecone never sees real names in your docs
+            # This ensures Cloud Pinecone never sees real PII in your docs
             print("   -> Sanitizing content...")
             safe_content = gk.detect_and_sanitize(raw_content)
             
             # 4. Chunking (Simple split for demo)
-            # In production, use LangChain's RecursiveCharacterTextSplitter
+            # Breaks text into 500-character chunks
             chunks = [safe_content[i:i+500] for i in range(0, len(safe_content), 500)]
             
             # 5. Upload to Cloud

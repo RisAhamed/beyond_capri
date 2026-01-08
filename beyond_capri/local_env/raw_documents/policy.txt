@@ -1,0 +1,6 @@
+BANK POLICY DOCUMENT #8821
+Topic: High Value Transfers
+
+For any transfer exceeding $2,000, the Sender must have a "Premium" account status.
+If the Sender has a "Standard" status, the maximum daily transfer limit is $1,000.
+Exceptions can be made if the Receiver is a registered Charity.
