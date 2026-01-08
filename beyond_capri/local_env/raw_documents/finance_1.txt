@@ -1,0 +1,417 @@
+================================================================================
+                    CONFIDENTIAL FINANCIAL INTELLIGENCE REPORT
+                    MERIDIAN CAPITAL HOLDINGS GROUP (MCHG)
+                    Q4 2025 - INSTITUTIONAL CLIENT PORTFOLIO REVIEW
+================================================================================
+
+DOCUMENT CLASSIFICATION: STRICTLY CONFIDENTIAL
+PREPARED BY: Sarah Mitchell, CFA - Senior Portfolio Manager
+REVIEWED BY: Dr. James Chen, Chief Investment Officer
+DATE: December 15, 2025
+REPORT ID: MCHG-FIN-2025-Q4-0847
+
+--------------------------------------------------------------------------------
+SECTION 1: HIGH-NET-WORTH CLIENT PORTFOLIO SUMMARY
+--------------------------------------------------------------------------------
+
+CLIENT: Margaret Elizabeth Thornton
+CLIENT ID: HNW-2019-00847
+SSN: 452-87-9321
+DATE OF BIRTH: March 14, 1962
+TAX ID: 94-7823156
+RELATIONSHIP MANAGER: David Rodriguez (Employee ID: RM-4521)
+
+ACCOUNT DETAILS:
+- Primary Brokerage: ACC-78452139-MCHG
+- Trust Account: TRU-THORNTON-2019-A
+- Retirement (IRA): IRA-452-87-9321-R
+- Offshore Holdings: CAYMAN-MT-2021-7845
+
+PORTFOLIO VALUE (As of Dec 1, 2025): $47,832,156.89
+YTD RETURN: +18.7%
+RISK PROFILE: Aggressive Growth
+
+ASSET ALLOCATION:
+| Asset Class          | Value ($)        | Allocation | YTD Change |
+|---------------------|------------------|------------|------------|
+| US Equities         | 19,132,862.76    | 40.0%      | +22.4%     |
+| International Equity| 9,566,431.38     | 20.0%      | +15.2%     |
+| Fixed Income        | 7,174,823.53     | 15.0%      | +4.8%      |
+| Alternative Invest. | 5,739,858.83     | 12.0%      | +31.5%     |
+| Real Estate (REITs) | 3,826,572.55     | 8.0%       | +12.1%     |
+| Cash & Equivalents  | 2,391,607.84     | 5.0%       | +2.1%      |
+
+TOP EQUITY HOLDINGS:
+1. NVIDIA Corp (NVDA) - 12,500 shares @ $487.32 = $6,091,500.00
+2. Apple Inc (AAPL) - 18,200 shares @ $198.45 = $3,611,790.00
+3. Microsoft Corp (MSFT) - 8,750 shares @ $412.67 = $3,610,862.50
+4. Amazon.com Inc (AMZN) - 5,200 shares @ $189.23 = $983,596.00
+5. Alphabet Inc (GOOGL) - 4,100 shares @ $142.78 = $585,398.00
+
+PENDING TRANSACTIONS:
+- SELL: 2,000 shares TSLA @ market (Est. $520,000) - Execution Date: Dec 18, 2025
+- BUY: $1,500,000 US Treasury Bonds (10Y) - Settlement: Dec 20, 2025
+- TRANSFER: $3,200,000 to Trust Account TRU-THORNTON-2019-A
+
+--------------------------------------------------------------------------------
+SECTION 2: INSTITUTIONAL CLIENT - PENSION FUND
+--------------------------------------------------------------------------------
+
+CLIENT: California State Teachers' Retirement System (CalSTRS)
+INSTITUTIONAL ID: INST-CALSTRS-1987
+FEDERAL EIN: 94-6001398
+PRIMARY CONTACT: Michael O'Brien, Director of Investments
+CONTACT EMAIL: mobrien@calstrs.ca.gov
+CONTACT PHONE: +1 (916) 414-7800
+
+FUND OVERVIEW:
+- Total AUM: $328,450,000,000.00 (Three Hundred Twenty-Eight Billion)
+- Beneficiaries: 982,456 active members
+- Average Benefit Payment: $4,267/month
+- Funded Ratio: 72.8%
+- Unfunded Liability: $89,234,000,000.00
+
+ALLOCATION WITH MERIDIAN CAPITAL:
+- Managed Assets: $4,785,000,000.00
+- Management Fee: 0.35% annually ($16,747,500.00)
+- Performance Fee: 15% above benchmark (Est. $12,400,000.00 for 2025)
+
+INVESTMENT MANDATE COMPLIANCE:
+[X] ESG Integration (Min 25% ESG-rated holdings) - COMPLIANT at 34.2%
+[X] Domestic Allocation (Min 60%) - COMPLIANT at 67.8%
+[X] Alternative Cap (Max 15%) - COMPLIANT at 11.3%
+[ ] Carbon Neutrality Target - IN PROGRESS (Target: 2030)
+
+--------------------------------------------------------------------------------
+SECTION 3: PRIVATE BANKING - WIRE TRANSFER LOG
+--------------------------------------------------------------------------------
+
+TRANSACTION ID: WIR-2025-12-08-78452
+DATE: December 8, 2025
+TIME: 14:32:17 EST
+
+ORIGINATOR:
+- Name: Robert James Whitfield III
+- Account: 7845-2139-8756-0023 (Chase Private Client)
+- Routing: 021000021
+- Address: 1847 Park Avenue, Apt 42B, New York, NY 10035
+- Phone: +1 (212) 555-8947
+
+BENEFICIARY:
+- Name: Whitfield Family Trust
+- Account: CH93 0076 2011 6238 5295 7 (Credit Suisse, Zurich)
+- SWIFT: CRESCHZZ80A
+- Reference: ESTATE-PLANNING-2025-Q4
+
+AMOUNT: $8,750,000.00 USD
+PURPOSE: Inter-family trust distribution per estate plan dated 06/15/2022
+COMPLIANCE OFFICER APPROVAL: Jennifer Walsh (CO-8847)
+AML CHECK: CLEARED - No OFAC/SDN matches
+KYC STATUS: VERIFIED (Last Update: 09/12/2025)
+
+--------------------------------------------------------------------------------
+SECTION 4: COMMERCIAL LENDING - LOAN PORTFOLIO
+--------------------------------------------------------------------------------
+
+BORROWER: Nexus Technologies International, LLC
+LOAN ID: CL-2024-00789-MCHG
+FEDERAL EIN: 82-4523178
+DUNS NUMBER: 07-854-2136
+CEO: Dr. Priya Sharma
+CFO: Marcus Wellington, CPA
+
+LOAN DETAILS:
+- Original Principal: $125,000,000.00
+- Current Balance: $98,456,723.45
+- Interest Rate: SOFR + 275 bps (Current: 8.12%)
+- Maturity Date: September 15, 2029
+- Payment Frequency: Monthly
+- Next Payment Due: December 15, 2025 ($1,247,856.32)
+
+COLLATERAL:
+1. Commercial Real Estate - 500 Tech Park Drive, San Jose, CA
+   Appraised Value: $78,500,000 (Appraisal Date: 03/2025)
+   Lien Position: First
+   
+2. Equipment & Machinery (Schedule A attached)
+   Book Value: $34,200,000
+   
+3. Accounts Receivable Assignment
+   Current AR Balance: $18,456,000
+   Advance Rate: 80%
+
+FINANCIAL COVENANTS:
+| Covenant                  | Required    | Actual (Q3 2025) | Status    |
+|--------------------------|-------------|------------------|-----------|
+| Debt Service Coverage    | ≥ 1.25x     | 1.48x           | COMPLIANT |
+| Leverage Ratio           | ≤ 3.50x     | 2.89x           | COMPLIANT |
+| Current Ratio            | ≥ 1.10x     | 1.67x           | COMPLIANT |
+| Tangible Net Worth       | ≥ $50M      | $67.4M          | COMPLIANT |
+
+--------------------------------------------------------------------------------
+SECTION 5: INVESTMENT BANKING - M&A ADVISORY
+--------------------------------------------------------------------------------
+
+PROJECT CODENAME: "Phoenix Rising"
+ENGAGEMENT ID: IB-MA-2025-0156
+CLASSIFICATION: MATERIAL NON-PUBLIC INFORMATION (MNPI)
+
+TARGET COMPANY: QuantumLeap Pharmaceuticals, Inc. (NASDAQ: QLPH)
+- Market Cap: $4.2 Billion
+- Enterprise Value: $5.1 Billion
+- CEO: Dr. Elena Vasquez
+- Headquarters: Cambridge, MA
+
+ACQUIRER: Horizon BioSciences Corp (NYSE: HBSC)
+- Market Cap: $28.7 Billion
+- CEO: Jonathan K. Richards
+- Headquarters: Basel, Switzerland
+
+PROPOSED TERMS:
+- Transaction Type: Stock-for-Stock Merger
+- Exchange Ratio: 0.385 HBSC shares per QLPH share
+- Premium to Current: 42.5%
+- Implied Value: $67.50 per QLPH share
+- Total Transaction Value: $5,892,000,000.00
+
+KEY DATES:
+- Due Diligence Complete: January 15, 2026
+- Board Approval (Target): January 22, 2026
+- Announcement Date: January 24, 2026
+- Shareholder Vote: March 15, 2026
+- Expected Close: April 30, 2026
+
+ADVISORY FEES (Meridian Capital):
+- Retainer Paid: $2,500,000.00
+- Success Fee: 0.75% of Transaction Value = $44,190,000.00
+- Total Expected: $46,690,000.00
+
+--------------------------------------------------------------------------------
+SECTION 6: CREDIT CARD FRAUD INVESTIGATION
+--------------------------------------------------------------------------------
+
+CASE NUMBER: FRD-2025-12-00456
+INVESTIGATION STATUS: ACTIVE
+LEAD INVESTIGATOR: Special Agent Thomas Anderson, CFE
+REPORTING INSTITUTION: Meridian Capital Credit Services
+
+VICTIM INFORMATION:
+- Name: Catherine Marie Sullivan
+- DOB: July 22, 1978
+- SSN: 287-65-4329
+- Address: 2847 Maple Street, Unit 5, Boston, MA 02108
+- Phone: +1 (617) 555-2847
+- Email: csullivan1978@gmail.com
+
+COMPROMISED ACCOUNTS:
+1. Meridian Platinum Card: 4532-8756-2341-9087
+   - Credit Limit: $75,000.00
+   - Fraudulent Charges: $34,567.89
+   - Date Range: Nov 28 - Dec 5, 2025
+   
+2. Meridian Business Card: 5412-7856-3412-6598
+   - Credit Limit: $150,000.00
+   - Fraudulent Charges: $89,234.56
+   - Date Range: Nov 30 - Dec 6, 2025
+
+FRAUDULENT TRANSACTIONS (Sample):
+| Date       | Merchant                      | Amount      | Location        |
+|------------|------------------------------|-------------|-----------------|
+| 11/28/2025 | ELECTRONICS WORLD            | $4,567.89   | Miami, FL       |
+| 11/29/2025 | LUXURY WATCHES INC           | $12,350.00  | Las Vegas, NV   |
+| 11/30/2025 | CRYPTO EXCHANGE GLOBAL       | $15,000.00  | Online          |
+| 12/01/2025 | PREMIUM ELECTRONICS          | $8,945.67   | Los Angeles, CA |
+| 12/02/2025 | DIAMOND JEWELERS INTL        | $23,456.78  | New York, NY    |
+| 12/03/2025 | TECH GADGETS UNLIMITED       | $6,789.00   | Chicago, IL     |
+| 12/04/2025 | DESIGNER OUTLET MALL         | $18,234.56  | Orlando, FL     |
+| 12/05/2025 | AIRLINE TICKETS GLOBAL       | $34,458.55  | Online          |
+
+SUSPECT INFORMATION:
+- Known Alias: "Victor Kozlov"
+- IP Address: 185.243.218.47 (Traced to: Moldova)
+- Device Fingerprint: Mozilla/5.0; Linux x86_64; rv:91.0
+- Associated Email: vktech2025@protonmail.com
+
+--------------------------------------------------------------------------------
+SECTION 7: DERIVATIVES TRADING - RISK EXPOSURE
+--------------------------------------------------------------------------------
+
+TRADING DESK: Fixed Income Derivatives
+DESK HEAD: Alexandra Chen, CFA
+RISK LIMIT: $500,000,000 VaR (99%, 1-day)
+CURRENT EXPOSURE: $387,456,000 (77.5% utilization)
+
+OPEN POSITIONS:
+1. Interest Rate Swaps (IRS)
+   - Notional: $2,450,000,000
+   - Direction: Pay Fixed 4.25%, Receive SOFR
+   - Counterparty: Goldman Sachs (ISDA: GS-MCHG-2019)
+   - Maturity: Various (2026-2035)
+   - MTM Value: +$34,567,890
+   - Collateral Posted: $28,500,000 (US Treasuries)
+
+2. Credit Default Swaps (CDS)
+   - Reference Entity: Ford Motor Company (BBB-)
+   - Notional: $150,000,000
+   - Position: Protection Buyer
+   - Spread: 245 bps
+   - MTM Value: -$4,234,567
+   
+3. FX Options (EUR/USD)
+   - Notional: €500,000,000
+   - Type: European Put
+   - Strike: 1.0650
+   - Expiry: March 21, 2026
+   - Premium Paid: $8,750,000
+   - Current Delta: -0.42
+
+MARGIN REQUIREMENTS:
+| Clearing House | Initial Margin | Variation Margin | Total      |
+|---------------|----------------|------------------|------------|
+| CME Clearing  | $145,000,000   | $23,456,789      | $168,456,789|
+| LCH Ltd       | $89,000,000    | -$12,345,678     | $76,654,322|
+| ICE Clear     | $34,000,000    | $5,678,901       | $39,678,901|
+
+--------------------------------------------------------------------------------
+SECTION 8: COMPLIANCE - SUSPICIOUS ACTIVITY REPORT (SAR)
+--------------------------------------------------------------------------------
+
+SAR FILING NUMBER: SAR-2025-MCHG-04521
+FILING DATE: December 10, 2025
+FILED BY: Compliance Department, Meridian Capital Holdings Group
+BSA OFFICER: Patricia Morgan, CAMS
+
+SUBJECT OF REPORT:
+- Name: Vladimir Petrov
+- DOB: February 3, 1975
+- Passport: Russian Federation - 75 4523178
+- US Address: 4521 Collins Avenue, Miami Beach, FL 33140
+- Phone: +1 (305) 555-4521
+
+SUSPICIOUS ACTIVITY SUMMARY:
+Multiple structured cash deposits totaling $847,500 over 90-day period.
+Pattern suggests intentional structuring to avoid CTR filing threshold.
+
+TRANSACTION PATTERN:
+| Date       | Type    | Amount    | Branch              |
+|------------|---------|-----------|---------------------|
+| 09/15/2025 | Deposit | $9,500.00 | Miami Beach Main    |
+| 09/18/2025 | Deposit | $9,800.00 | Coral Gables        |
+| 09/22/2025 | Deposit | $9,200.00 | Aventura Mall       |
+| 09/25/2025 | Deposit | $9,700.00 | Miami Beach Main    |
+| 09/29/2025 | Deposit | $9,400.00 | Brickell Center     |
+| ... (47 additional transactions following similar pattern) ...
+
+TOTAL SUSPICIOUS DEPOSITS: $847,500.00
+SUBSEQUENT WIRE TRANSFERS TO: Cyprus, Malta, UAE (Total: $785,000.00)
+
+RECOMMENDATION: Refer to FinCEN for further investigation.
+ACCOUNT STATUS: Restricted pending review.
+
+--------------------------------------------------------------------------------
+SECTION 9: TAX DOCUMENT - W-9 INFORMATION
+--------------------------------------------------------------------------------
+
+FORM W-9 DATA EXTRACT
+CERTIFICATION DATE: November 1, 2025
+
+PAYEE INFORMATION:
+- Legal Name: Westbrook Investment Partners, LP
+- Business Name: WIP Capital Management
+- Federal Tax Classification: Partnership
+- EIN: 83-4521789
+- Address: 200 Park Avenue South, 14th Floor, New York, NY 10003
+
+PARTNERS (K-1 Recipients):
+1. Richard A. Westbrook (Managing Partner)
+   SSN: 078-45-2136
+   Ownership: 45%
+   Capital Account: $23,456,789.00
+   
+2. Elizabeth Chen-Westbrook (Limited Partner)
+   SSN: 089-56-3247
+   Ownership: 35%
+   Capital Account: $18,234,567.00
+   
+3. Westbrook Family Trust (Limited Partner)
+   EIN: 87-6543210
+   Ownership: 20%
+   Capital Account: $10,419,752.00
+
+2025 TAX PROJECTIONS:
+- Ordinary Income: $4,567,890.00
+- Capital Gains (Long-term): $12,345,678.00
+- Capital Gains (Short-term): $2,345,678.00
+- Qualified Dividends: $890,123.00
+- Interest Income: $456,789.00
+
+ESTIMATED TAX LIABILITY: $6,234,567.00
+
+--------------------------------------------------------------------------------
+SECTION 10: PRIVATE EQUITY - FUND PERFORMANCE
+--------------------------------------------------------------------------------
+
+FUND: Meridian Growth Equity Fund IV, LP
+VINTAGE YEAR: 2021
+FUND SIZE: $2,750,000,000.00
+GP COMMITMENT: $55,000,000 (2%)
+INVESTMENT PERIOD: 2021-2026
+FUND TERM: 10 years + 2 one-year extensions
+
+LIMITED PARTNERS (Top 10):
+| LP Name                              | Commitment ($M) | Called (%) |
+|-------------------------------------|-----------------|------------|
+| Ontario Teachers' Pension Plan      | 250.0           | 78.4%      |
+| Abu Dhabi Investment Authority      | 200.0           | 78.4%      |
+| Harvard Management Company          | 175.0           | 78.4%      |
+| Yale Investments Office             | 150.0           | 78.4%      |
+| California Public Employees' Ret.   | 150.0           | 78.4%      |
+| Singapore GIC                       | 125.0           | 78.4%      |
+| New York State Common Retirement    | 100.0           | 78.4%      |
+| Texas Teachers' Retirement System   | 100.0           | 78.4%      |
+| Wellcome Trust                      | 75.0            | 78.4%      |
+| MacArthur Foundation                | 50.0            | 78.4%      |
+
+FUND METRICS (As of Sept 30, 2025):
+- Capital Called: $2,156,000,000.00 (78.4%)
+- Capital Distributed: $1,234,567,890.00
+- Remaining Value (NAV): $2,987,654,321.00
+- Total Value: $4,222,222,211.00
+- TVPI (Total Value to Paid-In): 1.96x
+- DPI (Distributions to Paid-In): 0.57x
+- Net IRR: 28.4%
+- Public Market Equivalent (PME): 1.34x
+
+PORTFOLIO COMPANIES:
+1. CloudScale Technologies - Entry: $145M @ $2.1B valuation
+   Current Value: $412M (2.84x) - Preparing IPO Q2 2026
+   
+2. HealthTech Solutions - Entry: $98M @ $890M valuation
+   Current Value: $287M (2.93x) - Strategic sale process
+   
+3. GreenEnergy Systems - Entry: $112M @ $1.4B valuation
+   Current Value: $89M (0.79x) - Under restructuring
+   
+4. FinServ Analytics - Entry: $78M @ $650M valuation
+   Current Value: $234M (3.00x) - Secondary sale completed
+
+================================================================================
+                          END OF CONFIDENTIAL REPORT
+================================================================================
+
+DISTRIBUTION LIST:
+- Dr. James Chen, CIO (jchen@meridiancapital.com)
+- Sarah Mitchell, Senior PM (smitchell@meridiancapital.com)
+- Board of Directors (Encrypted distribution)
+- External Auditors: Deloitte & Touche LLP (Engagement Partner: Michael Torres)
+
+DOCUMENT RETENTION: 7 years per SEC Rule 17a-4
+DESTRUCTION DATE: December 15, 2032
+
+This document contains material non-public information and is intended solely 
+for the use of authorized recipients. Unauthorized disclosure, copying, or 
+distribution is strictly prohibited and may result in civil and criminal 
+penalties under applicable securities laws.
+
+© 2025 Meridian Capital Holdings Group. All Rights Reserved.
+================================================================================

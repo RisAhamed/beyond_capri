@@ -76,6 +76,49 @@ class AnchorStore:
         except Exception as e:
             print(f"[Pinecone] Fetch error: {e}")
             return None
+    
+    def store_document_chunk(self, doc_id: str, clean_text: str, metadata: dict):
+        """
+        Uploads a SANITIZED document chunk to Cloud Pinecone.
+        Usage: For RAG (Retrieval Augmented Generation).
+        """
+        # Embed the SAFE text
+        vector = self.model.encode(clean_text).tolist()
+        
+        # Add a flag to distinguish Documents from Identity Anchors
+        metadata["type"] = "document_knowledge"
+        metadata["original_text"] = clean_text  # In production, this is the Safe Text
+        
+        try:
+            self.index.upsert(
+                vectors=[
+                    {
+                        "id": doc_id,
+                        "values": vector,
+                        "metadata": metadata
+                    }
+                ]
+            )
+            print(f"[Pinecone] Document chunk '{doc_id}' stored successfully.")
+        except Exception as e:
+            print(f"[Pinecone] Document upload error: {e}")
+
+    def similarity_search(self, query_text: str, top_k=3):
+        """
+        Used by the Cloud Agent to find relevant document info.
+        """
+        vector = self.model.encode(query_text).tolist()
+        try:
+            results = self.index.query(
+                vector=vector,
+                top_k=top_k,
+                include_metadata=True,
+                filter={"type": "document_knowledge"} # Only search docs, not people anchors
+            )
+            return [match['metadata']['original_text'] for match in results['matches']]
+        except Exception as e:
+            print(f"[Pinecone] Search error: {e}")
+            return []
 
 # Simple test
 if __name__ == "__main__":
