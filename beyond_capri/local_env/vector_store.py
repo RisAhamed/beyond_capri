@@ -1,95 +1,83 @@
-import os
 import time
-import logging
-from typing import List, Dict, Any
 from pinecone import Pinecone, ServerlessSpec
-from langchain_huggingface import HuggingFaceEmbeddings
+from sentence_transformers import SentenceTransformer
 from config import Config
 
-# Configure Logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("VectorStore")
-
-class ContextVectorStore:
-    """
-    Manages the storage and retrieval of 'Semantic Anchors' in Pinecone.
-    Uses local embeddings to ensure privacy before data leaves the environment.
-    """
-
+class AnchorStore:
     def __init__(self):
-        # 1. Initialize Local Embeddings
-        # We use a small, efficient model. Dimension = 384.
-        # Ensure your Pinecone index is created with dimension=384.
-        self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-        
-        # 2. Initialize Pinecone Client
+        # Initialize Pinecone Client
         self.pc = Pinecone(api_key=Config.PINECONE_API_KEY)
         self.index_name = Config.PINECONE_INDEX_NAME
         
-        # Connect to the index
-        if self.index_name not in [i.name for i in self.pc.list_indexes()]:
-            logger.warning(f"Index '{self.index_name}' not found. Please create it in Pinecone console with dim=384.")
+        # Initialize Local Embedding Model (Small, fast model for converting text to vectors)
+        # We use this locally to create the vector before sending to Cloud
+        print("[Pinecone] Loading embedding model (all-MiniLM-L6-v2)...")
+        self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        
+        self._ensure_index_exists()
         self.index = self.pc.Index(self.index_name)
 
-    def store_anchor(self, pseudonym_id: str, context_text: str, metadata: Dict[str, Any] = None):
-        """
-        Stores a semantic anchor.
+    def _ensure_index_exists(self):
+        """Check if index exists, if not create it (Serverless)."""
+        existing_indexes = [i.name for i in self.pc.list_indexes()]
         
-        Args:
-            pseudonym_id (str): The safe ID (e.g., "Patient_x9").
-            context_text (str): The non-sensitive traits (e.g., "Female, 45 years old, hypertension").
-            metadata (dict): Structured data for filtering.
-        """
-        try:
-            # Generate Vector Locally
-            vector = self.embeddings.embed_query(context_text)
-            
-            # Prepare metadata
-            if metadata is None:
-                metadata = {}
-            metadata["text"] = context_text
-            metadata["type"] = "semantic_anchor"
-            
-            # Upsert to Pinecone
-            self.index.upsert(vectors=[
-                {
-                    "id": pseudonym_id, 
-                    "values": vector, 
-                    "metadata": metadata
-                }
-            ])
-            logger.info(f"Stored semantic anchor for {pseudonym_id}")
-            
-        except Exception as e:
-            logger.error(f"Failed to store anchor: {e}")
-            raise e
+        if self.index_name not in existing_indexes:
+            print(f"[Pinecone] Index '{self.index_name}' not found. Creating...")
+            try:
+                self.pc.create_index(
+                    name=self.index_name,
+                    dimension=384, # Dimension for all-MiniLM-L6-v2
+                    metric='cosine',
+                    spec=ServerlessSpec(
+                        cloud='aws',
+                        region='us-east-1'
+                    )
+                )
+                # Wait for index to be ready
+                while not self.pc.describe_index(self.index_name).status['ready']:
+                    time.sleep(1)
+                print(f"[Pinecone] Index '{self.index_name}' created successfully.")
+            except Exception as e:
+                print(f"[Pinecone] Error creating index: {e}")
+        else:
+            print(f"[Pinecone] Connected to existing index: '{self.index_name}'")
 
-    def retrieve_context(self, query_text: str, top_k: int = 3) -> List[Dict]:
+    def store_anchor(self, uuid: str, semantic_text: str):
         """
-        Retrieves context based on semantic similarity.
-        Used by the Cloud Coordinator to understand the 'meaning' of a pseudonym.
+        Embeds the semantic context (e.g. 'Gender: Female') and pushes to Pinecone.
         """
+        # 1. Create Vector (Embed the text)
+        vector = self.model.encode(semantic_text).tolist()
+        
+        # 2. Upsert to Pinecone
         try:
-            vector = self.embeddings.embed_query(query_text)
-            results = self.index.query(
-                vector=vector, 
-                top_k=top_k, 
-                include_metadata=True
+            self.index.upsert(
+                vectors=[
+                    {
+                        "id": uuid,
+                        "values": vector,
+                        "metadata": {"semantic_context": semantic_text}
+                    }
+                ]
             )
-            
-            matches = []
-            for match in results['matches']:
-                if match['score'] > Config.SIMILARITY_THRESHOLD:
-                    matches.append({
-                        "id": match['id'],
-                        "score": match['score'],
-                        "content": match['metadata'].get('text', '')
-                    })
-            return matches
-            
+            print(f"[Pinecone] Semantic anchor stored for UUID: {uuid}")
         except Exception as e:
-            logger.error(f"Failed to retrieve context: {e}")
-            return []
+            print(f"[Pinecone] Error upserting anchor: {e}")
 
-# Singleton instance
-vector_store = ContextVectorStore()
+    def fetch_anchor(self, uuid: str):
+        """
+        Used by Cloud Coordinator to retrieve context.
+        """
+        try:
+            result = self.index.fetch(ids=[uuid])
+            if uuid in result.vectors:
+                return result.vectors[uuid].metadata.get("semantic_context")
+            return None
+        except Exception as e:
+            print(f"[Pinecone] Fetch error: {e}")
+            return None
+
+# Simple test
+if __name__ == "__main__":
+    store = AnchorStore()
+    store.store_anchor("test-uuid-123", "Gender: Female, Condition: Huntington's")
