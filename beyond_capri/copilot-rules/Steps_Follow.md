@@ -12,7 +12,7 @@ The system is divided into two distinct environments:
 
 ### A. Local Environment (Corporate/Secure)
 
-* **Component:** Local Gatekeeper Agent (Llama 3.1 / Local LLM).
+* **Component:** Local Gatekeeper Agent (Gemma 3 1B / Local LLM).
 * **Responsibility:** 1. Detect PII (Personally Identifiable Information).
 2. Map PII to "Context IDs" (e.g., `Amy Johnson` -> `Criteria_A`).
 3. Store the mapping key in a local secure SQLite/Vector DB.
@@ -58,7 +58,7 @@ If a conflict arises between **Privacy** and **Functionality**:
 
 * **Language:** Python 3.10+
 * **Agent Framework:** LangGraph / AutoGen (for A2A orchestration).
-* **Local LLM:** Ollama (Llama 3.1) for Gatekeeper.
+* **Local LLM:** Ollama (Gemma 3 1B) for Gatekeeper.
 * **Cloud LLM:** Azure OpenAI / groq llama models through Api for Reasoning.
 * **Tools:** MCP (Model Context Protocol) for secure tool execution.
 

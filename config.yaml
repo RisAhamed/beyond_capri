@@ -1,7 +1,7 @@
 # Model and service configuration (no secrets checked in).
 
 local_llm:
-  model: "llama3.1"
+  model: "gemma3:1b"
   provider: "ollama"
 
 cloud_llm:

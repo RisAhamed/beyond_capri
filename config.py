@@ -14,7 +14,7 @@ class Config:
     PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "beyond-capri-context")
     
     # Local Paths
-    DB_PATH = os.path.join(os.path.dirname(__file__), "local_env", "identity_vault.db")
+    DB_PATH = os.path.join(os.path.dirname(__file__), "beyond_capri", "local_env", "identity_vault.db")
 
     # Validation
     if not PINECONE_API_KEY:

@@ -1,101 +1,92 @@
+import uuid
 import json
-import logging
-from typing import Tuple, Dict
-from langchain_community.llms import Ollama
-from langchain_core.prompts import PromptTemplate
-from config import Config
-from local_env.db_manager import db_manager
-from local_env.vector_store import vector_store
+import ollama
+from beyond_capri.local_env.db_manager import IdentityVault
+from beyond_capri.local_env.vector_store import AnchorStore
 
-logger = logging.getLogger("Gatekeeper")
-
-class PrivacyGatekeeper:
-    """
-    The Local Shield.
-    1. Analyzes input text for PII using local Ollama.
-    2. Swaps PII for Pseudonyms via DB Manager.
-    3. Extracts non-PII semantic traits and sends them to Pinecone.
-    """
-
+class Gatekeeper:
     def __init__(self):
-        self.llm = Ollama(
-            base_url=Config.LOCAL_MODEL_URL,
-            model=Config.LOCAL_MODEL_NAME,
-            temperature=0  # Deterministic for extraction
-        )
-        
-        # Prompt to extract PII and Context separately
-        self.extraction_prompt = PromptTemplate.from_template("""
-            You are a Privacy Officer. Analyze the following text.
-            
-            Task 1: Identify all Personally Identifiable Information (PII) such as Names, Emails, Phone Numbers.
-            Task 2: Identify the "Semantic Context" (medical conditions, intent, gender, age) that is NOT PII but is crucial for reasoning.
-            
-            Input Text: "{text}"
-            
-            Output strictly valid JSON with this format:
-            {{
-                "pii_detected": [
-                    {{"value": "Alice Smith", "type": "PERSON"}},
-                    {{"value": "alice@example.com", "type": "EMAIL"}}
-                ],
-                "semantic_context": "Female patient, mid-40s, asking about hypertension treatment options."
-            }}
-        """)
+        print("[Gatekeeper] Initializing Local Privacy Shield (Gemma 3 1B)...")
+        self.vault = IdentityVault()
+        self.anchor_store = AnchorStore()
+        self.model = "gemma3:1b"
 
-    def sanitize(self, raw_text: str) -> Tuple[str, Dict[str, str]]:
+    def detect_and_sanitize(self, user_input: str):
         """
-        Main entry point. Takes raw text, returns safe text and a mapping report.
+        Main function: Takes raw text, hides PII, stores secrets, returns safe text.
         """
-        logger.info("Scanning text for PII...")
+        # 1. Ask Local LLM to find PII and Context
+        print(f"[Gatekeeper] Scanning for PII in: '{user_input}'")
+        analysis = self._extract_pii_metadata(user_input)
         
-        # 1. Ask Ollama to identify PII vs Context
-        chain = self.extraction_prompt | self.llm
+        if not analysis or "entities" not in analysis:
+            print("[Gatekeeper] No PII detected or analysis failed.")
+            return user_input
+
+        # 2. Process each entity
+        sanitized_text = user_input
+        
+        for entity in analysis["entities"]:
+            original_text = entity.get("text")
+            entity_type = entity.get("type")
+            semantic_context = entity.get("context") # e.g. "Female patient with flu"
+
+            if original_text and original_text in sanitized_text:
+                # A. Generate a safe UUID
+                safe_id = f"Entity_{str(uuid.uuid4())[:8]}" # e.g. Entity_a1b2c3d4
+                
+                # B. Vault the Real Identity (Local Only)
+                self.vault.save_identity(safe_id, {
+                    "original_text": original_text,
+                    "type": entity_type,
+                    "full_context": semantic_context
+                })
+                
+                # C. Store Semantic Anchor (Cloud Pinecone)
+                # We store the "Meaning" but NOT the "Name"
+                # Logic: "Entity_x9 is a Female patient" (Safe to send to cloud)
+                anchor_text = f"Entity Type: {entity_type}, Context: {semantic_context}"
+                self.anchor_store.store_anchor(safe_id, anchor_text)
+                
+                # D. Replace in text
+                sanitized_text = sanitized_text.replace(original_text, safe_id)
+                print(f"   -> Masked '{original_text}' as '{safe_id}'")
+
+        return sanitized_text
+
+    def _extract_pii_metadata(self, text: str):
+        """
+        Uses Ollama (Gemma 3 1B) to extract structured PII data in JSON format.
+        """
+        system_prompt = """
+        You are a Privacy Guard. Analyze the text and extract ALL Personally Identifiable Information (PII).
+        PII includes: Names, Phone Numbers, Emails, Addresses, Usernames, IDs.
+        
+        For each PII found, determine its 'context' (e.g., gender, role, medical condition) based on the text.
+        
+        Return ONLY a JSON object with this format:
+        {
+            "entities": [
+                {"text": "Amy", "type": "PERSON", "context": "Female, patient"},
+                {"text": "@amy_v", "type": "HANDLE", "context": "Venmo username of Amy"}
+            ]
+        }
+        """
+
         try:
-            response_str = chain.invoke({"text": raw_text})
-            # Clean up potential markdown formatting from LLM
-            response_str = response_str.replace("```json", "").replace("```", "").strip()
-            analysis = json.loads(response_str)
-        except json.JSONDecodeError:
-            logger.error("Ollama failed to return valid JSON. Fallback needed.")
-            # In production, you would add retry logic here.
-            return raw_text, {}
+            response = ollama.chat(model=self.model, messages=[
+                {'role': 'system', 'content': system_prompt},
+                {'role': 'user', 'content': text}
+            ], format='json') # Enforce JSON mode for reliability
 
-        # 2. Process PII
-        safe_text = raw_text
-        pseudonym_map = {}
-        
-        # We need a primary ID for the context anchor (usually the first PERSON found)
-        primary_pseudonym_id = None
-        
-        if "pii_detected" in analysis:
-            for item in analysis["pii_detected"]:
-                real_val = item["value"]
-                entity_type = item["type"]
-                
-                # Get or Create Pseudonym
-                pseudonym = db_manager.get_or_create_pseudonym(real_val, entity_type)
-                
-                # Replace in text
-                safe_text = safe_text.replace(real_val, pseudonym)
-                pseudonym_map[pseudonym] = real_val
-                
-                if entity_type == "PERSON" and not primary_pseudonym_id:
-                    primary_pseudonym_id = pseudonym
+            return json.loads(response['message']['content'])
+        except Exception as e:
+            print(f"[Gatekeeper] LLM Extraction Error: {e}")
+            return None
 
-        # 3. Store Semantic Context in Pinecone
-        # Only if we have a primary entity to attach the context to
-        if primary_pseudonym_id and "semantic_context" in analysis:
-            context_text = analysis["semantic_context"]
-            vector_store.store_anchor(
-                pseudonym_id=primary_pseudonym_id,
-                context_text=context_text,
-                metadata={"original_type": "PERSON"}
-            )
-            logger.info(f"Context anchor created for {primary_pseudonym_id}")
-
-        logger.info(f"Sanitization Complete. Safe Text: {safe_text}")
-        return safe_text, pseudonym_map
-
-# Singleton
-gatekeeper = PrivacyGatekeeper()
+# Simple test block
+if __name__ == "__main__":
+    gk = Gatekeeper()
+    raw_text = "I need to send $50 to David Smith for the consultation."
+    safe_text = gk.detect_and_sanitize(raw_text)
+    print(f"\n[Result]\nOriginal: {raw_text}\nSafe:     {safe_text}")
