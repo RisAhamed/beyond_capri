@@ -56,19 +56,19 @@ class Gatekeeper:
 
     def _extract_pii_metadata(self, text: str):
         """
-        Uses Ollama (Gemma 3 1B) to extract structured PII data in JSON format.
+        Updated for FINANCIAL PII detection.
         """
         system_prompt = """
-        You are a Privacy Guard. Analyze the text and extract ALL Personally Identifiable Information (PII).
-        PII includes: Names, Phone Numbers, Emails, Addresses, Usernames, IDs.
+        You are a Financial Privacy Guard. Analyze the request.
+        Identify:
+        1. PEOPLE/ENTITIES (Names, Companies)
+        2. CONTEXT (Sender, Receiver, Account Type)
         
-        For each PII found, determine its 'context' (e.g., gender, role, medical condition) based on the text.
-        
-        Return ONLY a JSON object with this format:
+        Return ONLY JSON:
         {
             "entities": [
-                {"text": "Amy", "type": "PERSON", "context": "Female, patient"},
-                {"text": "@amy_v", "type": "HANDLE", "context": "Venmo username of Amy"}
+                {"text": "Alice", "type": "PERSON", "context": "Sender, High Priority Client"},
+                {"text": "Bob", "type": "PERSON", "context": "Receiver"}
             ]
         }
         """
